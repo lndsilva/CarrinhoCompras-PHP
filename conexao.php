@@ -12,7 +12,27 @@
 	}
 	if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'adicionar') {
 		//adiciona produto ao carrinho
+
+		session_start();
+		$codProd = $_REQUEST['codProd'];
+
+		//cria carrinho, caso não tenha sido criado ainda
+		if (!isset($_SESSION['carrinho'])) {
+			$_SESSION['carrinho'] = array();
+		}
+
+		//verifica se já existe alguma unidade do produto no carrinho
+		if (isset($_SESSION['carrinho'][$codProd])) {
+			//se já existe, incrementa sua quantidade
+			$_SESSION['carrinho'][$codProd]++;
+		}else{
+			//se não existe, adiciona a primeira unidade ao carrinho
+			$_SESSION['carrinho'][$codProd] = 1;
+		}
+
 		header('location: ?action=visualizar');
+
+		
 	}else if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'remover') {
 		// remover produto do carrinho
 		header('location: ?action=visualizar');
